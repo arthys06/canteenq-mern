@@ -1,45 +1,137 @@
-# CanteenQ: Canteen Pre-Order & Queue (MERN)
+<h1 align="center">CanteenQ</h1>
+<p align="center"><b>Smart Canteen Pre-Order and Queue Management System</b></p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Stack-MERN-success" />
+  <img src="https://img.shields.io/badge/Frontend-React-61DAFB" />
+  <img src="https://img.shields.io/badge/Backend-Node.js%20%2B%20Express-339933" />
+  <img src="https://img.shields.io/badge/Database-MongoDB-47A248" />
+  <img src="https://img.shields.io/badge/Auth-JWT-blue" />
+</p>
 
-Order food from your phone, get a token, collect during your break.
-Every order is valid for **one break only**, so the canteen cooks only what is ordered and food is not wasted.
+CanteenQ lets students pre-order food for a selected break and collect it with a **token number** and **pickup code**, without standing in a queue. The canteen admin manages breaks and the menu, moves each order through **Start cooking → Mark ready → Hand over**, and uses a **preparation sheet** to cook only what has been ordered, which reduces food waste.
 
-**Stack:** MongoDB, Express, React (Vite), Node.js. Auth with JWT + bcrypt.
+This repository is the **MERN** version (React frontend). The same project is also built with Angular in the **MEAN** repository.
+
+---
 
 ## Features
-**Student:** register/login, pick a break, browse and search menu (category, veg filter), cart, place order, token + 4-digit pickup code, live status (Received, Cooking, Ready, Collected), queue position and wait estimate, cancel before cooking starts, order history.
 
-**Canteen admin:** live order board (auto-refresh every 5s), start cooking / mark ready / hand over, verify token + code, prep sheet (how many of each item to cook), menu CRUD with stock and on/off switch, manage breaks, reports (revenue, popular items, orders per break, wasted-order rate).
+**Student**
+- Register and log in securely (JWT authentication)
+- Browse the menu and add items to a cart
+- Order for a selected break
+- View a digital ticket with token number and pickup code
+- Track order status: Placed, Cooking, Ready, Handed over
 
-**Anti-waste rules:** ordering closes before each break; slot capacity limit; max 2 active orders per student per break; uncollected orders auto-expire after the break plus a grace period; students with 3 no-shows must prepay; stock is reserved atomically and restored on cancel.
+**Admin**
+- Create and manage breaks (time slots)
+- Menu manager: add, edit and remove items
+- Order board: Start cooking, Mark ready, Hand over
+- Preparation sheet showing the quantity of each item to cook
+- Reports page with order statistics
 
-## Setup (once)
-1. Install Node.js 18+ and MongoDB Community (or make a free MongoDB Atlas cluster and use its connection string).
-2. Backend:
-   ```
-   cd server
-   npm install
-   (edit .env if you use Atlas)
-   npm run seed
-   npm run dev
-   ```
-3. Frontend (new terminal):
-   ```
-   cd client
-   npm install
-   npm run dev
-   ```
-4. Open http://localhost:5173
+## Tech Stack
 
-## Demo logins (created by seed)
-- Student: student@college.com / student123
-- Admin: admin@canteen.com / admin123
+| Layer | Technology |
+|-------|------------|
+| Frontend | React, JavaScript, CSS |
+| Backend | Node.js, Express.js |
+| Database | MongoDB with Mongoose |
+| Security | JWT, password hashing, role-based access |
+| Tools | VS Code, Postman, Git |
 
-## Testing tip
-Ordering closes `cutoff` minutes before a break starts. To demo at any time, log in as admin, open **Breaks**, and add a break starting about 30 minutes from now.
+## Architecture
 
-## Folder map
 ```
-server/  models/ (User, MenuItem, Slot, Order, Counter)   routes/ (auth, menu, slots, orders)
-         middleware/auth.js (JWT + admin check)           utils/expire.js (auto-expiry job)
-client/  src/pages/ (Auth, Menu, Checkout, Orders, Admin*) src/context.jsx (user + cart state)
+React client  →  Express REST API (Node.js)  →  MongoDB
 ```
+
+## Project Structure
+
+```
+canteenq-mern/
+├── server/     # Express API, Mongoose models, routes, JWT auth
+└── client/     # React frontend
+```
+
+## Screenshots
+
+| Login | Menu |
+|-------|------|
+| ![Login](screenshots/login.png) | ![Menu](screenshots/menu.png) |
+
+| Cart | Ticket |
+|------|--------|
+| ![Cart](screenshots/cart.png) | ![Ticket](screenshots/ticket.png) |
+
+| Admin Board | Preparation Sheet |
+|-------------|-------------------|
+| ![Admin](screenshots/admin-board.png) | ![Prep](screenshots/prep-sheet.png) |
+
+| Menu Manager | Reports |
+|--------------|---------|
+| ![Menu Manager](screenshots/menu-manager.png) | ![Reports](screenshots/reports.png) |
+
+## Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (LTS version)
+- A MongoDB database (local, or free [MongoDB Atlas](https://www.mongodb.com/atlas))
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/YOUR-USERNAME/canteenq-mern.git
+cd canteenq-mern
+```
+
+### 2. Set up the server
+```bash
+cd server
+npm install
+```
+Create a `.env` file (see `.env.example`):
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
+Load the sample data (first time only) and start the server:
+```bash
+npm run seed
+npm run dev
+```
+
+### 3. Set up the client
+Open a second terminal:
+```bash
+cd client
+npm install
+npm run dev
+```
+Open the address shown in the terminal in your browser.
+
+### Demo accounts
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | YOUR-ADMIN-EMAIL | YOUR-ADMIN-PASSWORD |
+| Student | YOUR-STUDENT-EMAIL | YOUR-STUDENT-PASSWORD |
+
+## How It Works
+1. The admin creates a break (for example, a lunch break).
+2. The student logs in, picks the break, adds items to the cart and places the order.
+3. The student receives a ticket with a token number and pickup code.
+4. The admin reads the preparation sheet, cooks the required quantity, and moves the order through Start cooking, Mark ready and Hand over.
+5. The student shows the pickup code and collects the food.
+
+## Future Enhancements
+- Online payment
+- SMS or push notification when an order is ready
+- Mobile application
+- Demand prediction from past reports
+
+## Author
+**YOUR NAME**
+[LinkedIn](YOUR-LINKEDIN-URL) | [GitHub](https://github.com/YOUR-USERNAME) | your.email@example.com
+
+## License
+This project is licensed under the MIT License.
